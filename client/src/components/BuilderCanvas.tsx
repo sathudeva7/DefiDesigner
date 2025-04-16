@@ -1,10 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { initEditor, getDevices, setDevice } from "@/lib/grapesjs-config";
 import "grapesjs/dist/css/grapes.min.css";
-
-// Add some CSS for drag-and-drop indicators
 import "./canvas.css";
 
 interface BuilderCanvasProps {
@@ -22,65 +20,62 @@ const BuilderCanvas = ({ setEditor }: BuilderCanvasProps) => {
         const editor = initEditor(editorRef.current);
         editorInstance.current = editor;
 
-        // Setup drag-and-drop handlers
-        const canvasDocument = editor.Canvas.getDocument();
-        
-        // Allow dropping
-        canvasDocument.addEventListener('dragover', (e: DragEvent) => {
-          e.preventDefault();
-          e.stopPropagation();
-          e.dataTransfer!.dropEffect = 'copy';
+        // Set up drag and drop handling
+        editor.on('load', () => {
+          // Access the canvas document
+          const canvas = editor.Canvas.getDocument();
           
-          // Add visual feedback
-          canvasDocument.body.classList.add('gjs-droppable-active');
+          // Handle dragover event
+          canvas.addEventListener('dragover', (e: DragEvent) => {
+            e.preventDefault();
+            e.dataTransfer!.dropEffect = 'copy';
+            canvas.body.classList.add('dragover');
+          });
+          
+          // Handle drop event
+          canvas.addEventListener('drop', (e: DragEvent) => {
+            e.preventDefault();
+            canvas.body.classList.remove('dragover');
+            
+            // Get the block ID from dataTransfer
+            const blockId = e.dataTransfer!.getData('blockId');
+            if (!blockId) return;
+            
+            // Get the block from block manager
+            const block = editor.BlockManager.get(blockId);
+            if (!block) return;
+            
+            // Get position relative to canvas
+            const canvasRect = editor.Canvas.getFrameEl().getBoundingClientRect();
+            const x = e.clientX - canvasRect.left;
+            const y = e.clientY - canvasRect.top;
+            
+            // Add the component at the drop position
+            const content = typeof block.get('content') === 'string' 
+              ? block.get('content') 
+              : `<div data-gjs-type="text">Component: ${blockId}</div>`;
+              
+            editor.addComponents(`
+              <div data-gjs-type="default" style="position: absolute; top: ${y}px; left: ${x}px;">
+                ${content}
+              </div>
+            `);
+            
+            console.log(`Dropped component: ${blockId} at (${x}, ${y})`);
+          });
+          
+          // Handle dragleave
+          canvas.addEventListener('dragleave', () => {
+            canvas.body.classList.remove('dragover');
+          });
         });
         
-        // Handle drop
-        canvasDocument.addEventListener('drop', (e: DragEvent) => {
-          e.preventDefault();
-          e.stopPropagation();
-          
-          // Remove visual feedback
-          canvasDocument.body.classList.remove('gjs-droppable-active');
-          
-          // Get the block ID from the dataTransfer
-          const blockId = e.dataTransfer!.getData('blockId');
-          if (!blockId) return;
-          
-          const block = editor.BlockManager.get(blockId);
-          if (!block) return;
-          
-          // Get coordinates relative to the canvas
-          const canvasRect = editor.Canvas.getCanvasView().el.getBoundingClientRect();
-          const x = e.clientX - canvasRect.left;
-          const y = e.clientY - canvasRect.top;
-          
-          // Add component at drop position
-          const content = block.get('content');
-          const component = editor.addComponents(`<div data-gjs-type="wrapper" style="position: absolute; top: ${y}px; left: ${x}px;">${content}</div>`)[0];
-          
-          // Select the newly added component
-          editor.select(component);
-          
-          console.log(`Dropped component ${blockId} at position (${x}, ${y})`);
-        });
-        
-        // Handle drag leave
-        canvasDocument.addEventListener('dragleave', () => {
-          canvasDocument.body.classList.remove('gjs-droppable-active');
-        });
-        
-        // Set editor instance
+        // Set the editor
         setEditor(editor);
         
-        // Clean up
+        // Clean up on unmount
         return () => {
           if (editor) {
-            // Remove event listeners
-            canvasDocument.removeEventListener('dragover', () => {});
-            canvasDocument.removeEventListener('drop', () => {});
-            canvasDocument.removeEventListener('dragleave', () => {});
-            
             editor.destroy();
             editorInstance.current = null;
           }

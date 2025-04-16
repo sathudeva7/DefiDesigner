@@ -1,5 +1,6 @@
 /* Drag and drop styling for the canvas area */
-.gjs-droppable-active {
+.gjs-droppable-active,
+.dragover {
   outline: 2px dashed #3694ff !important;
   outline-offset: -2px;
 }
@@ -44,4 +45,56 @@ body.dragging .gjs-cv-canvas {
 .gjs-toolbar {
   background-color: #1c1c22 !important;
   border: 1px solid #2d2d35 !important;
+}
+
+/* Canvas positioning fixes */
+.gjs-cv-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+/* Dark theme styling for the editor */
+.gjs-pn-buttons {
+  color: #ffffff !important;
+}
+
+.gjs-pn-panel {
+  background-color: #1c1c22 !important;
+  border-color: #2d2d35 !important;
+}
+
+.gjs-block {
+  background-color: #1c1c22 !important;
+  border-color: #2d2d35 !important;
+}
+
+.gjs-block:hover {
+  background-color: #252530 !important;
+}
+
+/* Make component handles visible */
+.gjs-toolbar {
+  background-color: #151419 !important;
+  border: 1px solid #3694ff !important;
+}
+
+.gjs-toolbar-item, .gjs-resizer-h {
+  color: #6e56cf !important;
+  background-color: #1c1c22 !important;
+}
+
+/* Better highlighting for drag drop */
+.drag-helper {
+  position: absolute;
+  background-color: rgba(110, 86, 207, 0.3);
+  border: 1px dashed #6e56cf;
+  pointer-events: none;
+  z-index: 10000;
+}
+
+/* Make component outlines more visible */
+.gjs-comp-selected {
+  outline: 2px solid #6e56cf !important;
 }
