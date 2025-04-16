@@ -18,12 +18,14 @@ const Category = ({ title, children, defaultOpen = true }: CategoryProps) => {
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="border-b border-border">
       <div className="p-3">
-        <CollapsibleTrigger className="flex items-center justify-between w-full mb-2">
-          <div className="text-sm font-medium text-text-secondary">{title}</div>
-          <span className="text-text-muted text-xs">{isOpen ? '▼' : '▶'}</span>
+        <CollapsibleTrigger className="flex items-center justify-between w-full focus:outline-none">
+          <span className="font-medium text-text-primary">{title}</span>
+          <span className="text-text-muted text-xs">{isOpen ? "▼" : "►"}</span>
         </CollapsibleTrigger>
-        <CollapsibleContent>{children}</CollapsibleContent>
       </div>
+      <CollapsibleContent className="p-3 pt-0">
+        {children}
+      </CollapsibleContent>
     </Collapsible>
   );
 };
