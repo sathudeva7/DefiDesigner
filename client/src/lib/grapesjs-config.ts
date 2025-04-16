@@ -125,61 +125,95 @@ export const initEditor = (container: string | HTMLElement) => {
     },
   });
 
+  // Create categories before adding blocks
+  editor.BlockManager.getCategories().reset();
+  const categories = editor.BlockManager.getCategories();
+  categories.add([
+    { id: 'basic', label: 'Basic' },
+    { id: 'defi', label: 'DeFi Components' },
+    { id: 'layouts', label: 'Layouts' }
+  ]);
+  
+  // Delete all existing blocks to avoid duplicates
+  editor.BlockManager.getAll().reset();
+  
+  // Add basic blocks
+  editor.BlockManager.add('text', {
+    label: 'Text',
+    category: { id: 'basic', label: 'Basic' },
+    content: '<div data-gjs-type="text">Insert your text here</div>',
+    media: `<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;background-color:#252530;border-radius:4px;color:#6e56cf;">T</div>`,
+  });
+  
+  editor.BlockManager.add('image', {
+    label: 'Image',
+    category: { id: 'basic', label: 'Basic' },
+    content: { type: 'image' },
+    media: `<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;background-color:#252530;border-radius:4px;color:#6e56cf;">I</div>`,
+  });
+  
+  editor.BlockManager.add('button', {
+    label: 'Button',
+    category: { id: 'basic', label: 'Basic' },
+    content: '<button class="button">Click me</button>',
+    media: `<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;background-color:#252530;border-radius:4px;color:#6e56cf;">B</div>`,
+  });
+  
   // Register custom blocks - DeFi components
   editor.BlockManager.add("connect-wallet-button", {
     label: "Connect Wallet Button",
-    category: "DeFi Components",
-    media: `<div class="w-8 h-8 rounded bg-panel-bg flex items-center justify-center text-primary"><i class="fas fa-wallet text-sm"></i></div>`,
+    category: { id: 'defi', label: 'DeFi Components' },
+    media: `<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;background-color:#252530;border-radius:4px;color:#6e56cf;">W</div>`,
     content: ConnectWalletButton(),
   });
 
   editor.BlockManager.add("token-swap-widget", {
     label: "Token Swap Widget",
-    category: "DeFi Components",
-    media: `<div class="w-8 h-8 rounded bg-panel-bg flex items-center justify-center text-primary"><i class="fas fa-exchange-alt text-sm"></i></div>`,
+    category: { id: 'defi', label: 'DeFi Components' },
+    media: `<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;background-color:#252530;border-radius:4px;color:#6e56cf;">S</div>`,
     content: TokenSwapWidget(),
   });
 
   editor.BlockManager.add("lending-pool-panel", {
     label: "Lending Pool Panel",
-    category: "DeFi Components",
-    media: `<div class="w-8 h-8 rounded bg-panel-bg flex items-center justify-center text-primary"><i class="fas fa-coins text-sm"></i></div>`,
+    category: { id: 'defi', label: 'DeFi Components' },
+    media: `<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;background-color:#252530;border-radius:4px;color:#6e56cf;">L</div>`,
     content: LendingPoolPanel(),
   });
 
   editor.BlockManager.add("yield-farming-section", {
     label: "Yield Farming Section",
-    category: "DeFi Components",
-    media: `<div class="w-8 h-8 rounded bg-panel-bg flex items-center justify-center text-primary"><i class="fas fa-seedling text-sm"></i></div>`,
+    category: { id: 'defi', label: 'DeFi Components' },
+    media: `<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;background-color:#252530;border-radius:4px;color:#6e56cf;">Y</div>`,
     content: YieldFarmingSection(),
   });
 
   editor.BlockManager.add("price-charts", {
     label: "Price Charts",
-    category: "DeFi Components",
-    media: `<div class="w-8 h-8 rounded bg-panel-bg flex items-center justify-center text-primary"><i class="fas fa-chart-line text-sm"></i></div>`,
+    category: { id: 'defi', label: 'DeFi Components' },
+    media: `<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;background-color:#252530;border-radius:4px;color:#6e56cf;">C</div>`,
     content: PriceCharts(),
   });
 
   // Register custom blocks - Layout components
   editor.BlockManager.add("hero-section", {
     label: "Hero Section",
-    category: "Layouts",
-    media: `<div class="w-8 h-8 rounded bg-panel-bg flex items-center justify-center text-primary"><i class="fas fa-th-large text-sm"></i></div>`,
+    category: { id: 'layouts', label: 'Layouts' },
+    media: `<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;background-color:#252530;border-radius:4px;color:#6e56cf;">H</div>`,
     content: HeroSection(),
   });
 
   editor.BlockManager.add("two-columns", {
     label: "Two Columns",
-    category: "Layouts",
-    media: `<div class="w-8 h-8 rounded bg-panel-bg flex items-center justify-center text-primary"><i class="fas fa-columns text-sm"></i></div>`,
+    category: { id: 'layouts', label: 'Layouts' },
+    media: `<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;background-color:#252530;border-radius:4px;color:#6e56cf;">2C</div>`,
     content: TwoColumns(),
   });
 
   editor.BlockManager.add("card-grid", {
     label: "Card Grid",
-    category: "Layouts",
-    media: `<div class="w-8 h-8 rounded bg-panel-bg flex items-center justify-center text-primary"><i class="fas fa-th text-sm"></i></div>`,
+    category: { id: 'layouts', label: 'Layouts' },
+    media: `<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;background-color:#252530;border-radius:4px;color:#6e56cf;">G</div>`,
     content: CardGrid(),
   });
 
