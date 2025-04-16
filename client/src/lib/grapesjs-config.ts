@@ -17,6 +17,14 @@ export const initEditor = (container: string | HTMLElement) => {
     width: "100%",
     fromElement: false,
     storageManager: false,
+    // Enable dragging
+    dragMode: 'absolute',
+    // Enable component resizing
+    resizeComponents: true,
+    // Allow component selection
+    canvasScroll: true,
+    // Enable component selection
+    selectorManager: { componentFirst: true },
     canvas: {
       styles: [
         'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
