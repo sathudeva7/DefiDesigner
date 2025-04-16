@@ -42,6 +42,7 @@ const Header = ({ editor }: HeaderProps) => {
       <!DOCTYPE html>
       <html>
         <head>
+         <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.min.js"></script>
           <style>${content.css}</style>
         </head>
         <body>

@@ -1,7 +1,7 @@
 const ConnectWalletButton = () => {
   const template = `
-    <div class="defi-component connect-wallet-button">
-      <button class="connect-wallet-btn" style="
+    <div data-gjs-type="connect-btn" class="defi-component connect-wallet-button">
+      <button  id="wallet-btn" class="connect-wallet-btn" style="
         display: inline-block;
         padding: 10px 20px;
         background-color: #6e56cf;
