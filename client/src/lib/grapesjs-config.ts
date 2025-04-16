@@ -17,13 +17,7 @@ export const initEditor = (container: string | HTMLElement) => {
     width: "100%",
     fromElement: false,
     storageManager: false,
-    // Enable dragging
-    dragMode: 'absolute',
-    // Enable component resizing
-    resizeComponents: true,
-    // Allow component selection
-    canvasScroll: true,
-    // Enable component selection
+    // Enable component selection via selectorManager
     selectorManager: { componentFirst: true },
     canvas: {
       styles: [

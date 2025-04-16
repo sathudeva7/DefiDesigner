@@ -1,0 +1,47 @@
+/* Drag and drop styling for the canvas area */
+.gjs-droppable-active {
+  outline: 2px dashed #3694ff !important;
+  outline-offset: -2px;
+}
+
+.gjs-droppable-hover {
+  outline: 2px solid #6e56cf !important;
+  outline-offset: -2px;
+  background-color: rgba(54, 148, 255, 0.1) !important;
+}
+
+.gjs-frame, .gjs-frame-wrapper {
+  background-color: #151419 !important;
+}
+
+.gjs-selected {
+  outline: 2px solid #6e56cf !important;
+  outline-offset: -2px;
+}
+
+/* Custom styling for dragging */
+body.dragging .gjs-cv-canvas {
+  cursor: grabbing !important;
+}
+
+[draggable=true] {
+  cursor: grab;
+  user-select: none;
+}
+
+[draggable=true]:active {
+  cursor: grabbing;
+}
+
+/* Better visibility for component ghosts during drag */
+.gjs-ghost {
+  background-color: rgba(54, 148, 255, 0.3) !important;
+  border: 1px solid #3694ff !important;
+  border-radius: 4px;
+}
+
+/* Make the drop area more visible */
+.gjs-toolbar {
+  background-color: #1c1c22 !important;
+  border: 1px solid #2d2d35 !important;
+}
