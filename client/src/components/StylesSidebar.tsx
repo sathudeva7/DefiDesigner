@@ -130,13 +130,6 @@ const StylesSidebar = ({ editor, selectedComponent }: StylesSidebarProps) => {
       <div className="p-3 border-b border-border">
         <div className="text-sm font-semibold text-text-primary mb-3">Styles</div>
         
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-3">
-            <TabsTrigger value="properties" className="text-sm">Properties</TabsTrigger>
-            <TabsTrigger value="styles" className="text-sm">Styles</TabsTrigger>
-          </TabsList>
-        </Tabs>
-        
         <div className="text-sm text-text-secondary mb-2">
           {selectedComponent 
             ? `Currently editing: ${componentName}`
@@ -150,7 +143,7 @@ const StylesSidebar = ({ editor, selectedComponent }: StylesSidebarProps) => {
             Select a component to edit its styles
           </div>
         ) : (
-          <TabsContent value="styles" className="mt-0">
+          <div className="mt-0">
             {/* Dimensions Panel */}
             <StyleSection title="Dimensions">
               <div className="grid grid-cols-2 gap-3">
@@ -483,7 +476,7 @@ const StylesSidebar = ({ editor, selectedComponent }: StylesSidebarProps) => {
                 </div>
               </div>
             </StyleSection>
-          </TabsContent>
+          </div>
         )}
       </div>
     </div>

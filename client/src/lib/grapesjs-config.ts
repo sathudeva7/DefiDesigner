@@ -17,6 +17,12 @@ export const initEditor = (container: string | HTMLElement) => {
     width: "100%",
     fromElement: false,
     storageManager: false,
+    canvas: {
+      styles: [
+        'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
+        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
+      ]
+    },
     deviceManager: {
       devices: [
         {
@@ -38,6 +44,13 @@ export const initEditor = (container: string | HTMLElement) => {
         },
       ],
     },
+    // Fix for lastComponent error
+    components: `
+      <div style="padding: 20px; min-height: 300px;">
+        <!-- Empty canvas with some minimal content -->
+        <h1 style="font-family: 'Inter', sans-serif; color: #ffffff;">Drop components here</h1>
+      </div>
+    `,
     panels: {
       defaults: [],
     },
@@ -105,7 +118,7 @@ export const initEditor = (container: string | HTMLElement) => {
     },
     plugins: [gjsBlocksBasic],
     pluginsOpts: {
-      [gjsBlocksBasic]: {
+      'grapesjs-blocks-basic': {
         blocks: ["column1", "column2", "column3"],
         flexGrid: true,
       },

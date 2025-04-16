@@ -11,80 +11,27 @@ interface BuilderCanvasProps {
 const BuilderCanvas = ({ setEditor }: BuilderCanvasProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const editorInstance = useRef<any>(null);
-  const [editorReady, setEditorReady] = useState<boolean>(false);
-
-  // Function to safely setup canvas styling
-  const setupCanvasStyling = (editor: any) => {
-    try {
-      // Get canvas iframe document
-      const frame = editor.Canvas.getFrame();
-      if (!frame) return false;
-      
-      const doc = frame.contentDocument || frame.contentWindow?.document;
-      if (!doc) return false;
-      
-      // Add custom styles
-      const styleEl = doc.createElement('style');
-      styleEl.innerHTML = `
-        body {
-          background-color: #121214;
-          color: #ffffff;
-          font-family: 'Inter', sans-serif;
-        }
-      `;
-      doc.head.appendChild(styleEl);
-
-      // Add custom fonts
-      const fontLink = doc.createElement('link');
-      fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
-      fontLink.rel = 'stylesheet';
-      doc.head.appendChild(fontLink);
-
-      // Add FontAwesome
-      const iconLink = doc.createElement('link');
-      iconLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
-      iconLink.rel = 'stylesheet';
-      doc.head.appendChild(iconLink);
-      
-      return true;
-    } catch (error) {
-      console.error('Error setting up canvas document:', error);
-      return false;
-    }
-  };
 
   useEffect(() => {
     if (editorRef.current && !editorInstance.current) {
       try {
-        // Initialize editor
+        // Initialize editor with all styling handled in the configuration
         const editor = initEditor(editorRef.current);
         editorInstance.current = editor;
         setEditor(editor);
         
-        // Add event listeners for when frame is ready
-        editor.on('canvas:load', () => {
-          const success = setupCanvasStyling(editor);
-          setEditorReady(success);
-        });
-        
-        // Also try to set up after a short delay as a fallback
-        setTimeout(() => {
-          if (!editorReady && editor) {
-            setupCanvasStyling(editor);
-            setEditorReady(true);
-          }
-        }, 1000);
-        
         // Clean up
         return () => {
-          editor.destroy();
-          editorInstance.current = null;
+          if (editor) {
+            editor.destroy();
+            editorInstance.current = null;
+          }
         };
       } catch (error) {
         console.error('Error initializing editor:', error);
       }
     }
-  }, [setEditor, editorReady]);
+  }, [setEditor]);
 
   const handleDeviceChange = (deviceId: string) => {
     if (editorInstance.current) {
